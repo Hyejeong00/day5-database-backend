@@ -153,6 +153,19 @@ export const useCommentStore = create(devtools((set) => ({
       toast.error("createComment failed");
     }
   },
+  updateComment: async (customer_id, post_id, comment_id, comment) => {
+    try {
+      await api.put(`film/post/comment/${comment_id}`, { 
+        customer_id,
+        post_id,
+        comment_id,
+        comment 
+      });
+    } catch (e) {
+      DEV && console.error(e.stack);
+      toast.error("updateComment failed");
+    }
+  },
   deleteComment: async (commentId) => {
     try{
       await api.delete(`film/post/comment/${commentId}`)
