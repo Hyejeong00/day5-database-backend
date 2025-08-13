@@ -32,6 +32,18 @@ export const commentCreate = async ({ post_id, customer_id, content }) => {
   });
 }
 
+export const commentUpdate = async ({comment_id, content, customer_id, post_id}) => {
+  return prisma.film_comment.update({
+      where: { comment_id },
+      data: { 
+        comment_id,
+        content,
+        customer_id,
+        post_id 
+      },
+    });
+}
+
 export const commentDelete = async ({commentId}) => {
   return prisma.film_comment.delete({ where: { comment_id : commentId } });
 }

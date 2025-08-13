@@ -39,9 +39,29 @@ export const createOne = async (req, res) => {
   }
 };
 
+export const updateOne = async (req, res) => {
+  const comment_id = Number(req.params.comment_id);
+  const content = req.body.content;
+  const customer_id = Number(req.params.customer_id);
+  const post_id = Number(req.params.post_id);
+
+  if (!comment_id || !content) return res.status(400).json({ error: "Bad Request" });
+
+  try {
+    const result = await commentUpdate({comment_id, content, customer_id, post_id})
+    return res.status(200).json({ data: result });
+  } catch (e) {
+    if (
+      e instanceof PrismaClientKnownRequestError ||
+      e instanceof PrismaClientValidationError
+    )
+      return res.status(400).json({ error: e.stack });
+    return res.status(500).json({ error: e.stack });
+  }
+};
+
 export const deleteOne = async (req, res) => {
   const commentId = Number(req.params.commentId)
-   console.log("Delete commentId:", commentId);
 
   if (!commentId)
     return res.status(400).json({ error: "Bad Request" });
@@ -50,7 +70,6 @@ export const deleteOne = async (req, res) => {
     const result = await commentDelete({commentId});
     return res.status(200).json({ data: result });
   } catch (e) {
-    console.error("Delete error:", e);  // e.stack 대신 e로 바꿔서 전체 메시지 보기
     if (
       e instanceof PrismaClientKnownRequestError ||
       e instanceof PrismaClientValidationError
