@@ -31,3 +31,7 @@ export const commentCreate = async ({ post_id, customer_id, content }) => {
     },
   });
 }
+
+export const commentDelete = async ({commentId}) => {
+  return prisma.film_comment.delete({ where: { comment_id : commentId } });
+}

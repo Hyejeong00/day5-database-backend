@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import { filmRouter } from "./feature/film/router.mjs";
 import { postRouter } from "./feature/post/router.mjs";
 import { likeRouter } from "./feature/like/router.mjs";
-import {  commentCreateRouter, commentGetRouter, commentRouter } from "./feature/comment/router.mjs";
+import {  commentCreateRouter, commentDeleteRouter, commentGetRouter, commentRouter } from "./feature/comment/router.mjs";
 
 // .env 파일 불러오기
 dotenv.config();
@@ -39,6 +39,7 @@ app.use(
 
 app.get("/film/post/:postId/comment", commentGetRouter)
 app.post("/film/post/:postId/comment", commentCreateRouter);
+app.delete("/film/post/comment/:commentId", commentDeleteRouter);
 app.use("/film/post/like", likeRouter);
 app.use("/film/post", postRouter);
 app.use("/film", filmRouter);

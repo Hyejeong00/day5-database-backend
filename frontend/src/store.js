@@ -150,11 +150,17 @@ export const useCommentStore = create(devtools((set) => ({
 
     } catch (e) {
       DEV && console.error(e.stack);
-      toast.error("getComments failed");
+      toast.error("createComment failed");
     }
   },
-  // TODO: update comments
-  // TODO: delete comments
+  deleteComment: async (commentId) => {
+    try{
+      await api.delete(`film/post/comment/${commentId}`)
+    }catch(e){
+      DEV && console.error(e.stack);
+      toast.error("deleteComment failed");
+    }
+  },
 }), { name: 'commentStore'}))
 
 export const useModalStore = create(

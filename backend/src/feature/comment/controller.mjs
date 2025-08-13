@@ -1,5 +1,5 @@
 import getPageStartEnd from "../../util/getPageStartEnd.mjs";
-import { commentCreate, commentFindMany } from "./model.mjs";
+import { commentCreate, commentDelete, commentFindMany } from "./model.mjs";
 
 export const getAll = async (req, res) => {
   const limit = req.query.limit || 10;
@@ -36,5 +36,26 @@ export const createOne = async (req, res) => {
     return res.status(200).json({ data: result });
   } catch (e) {
     return res.status(400).json({ error: e.stack });
+  }
+};
+
+export const deleteOne = async (req, res) => {
+  const commentId = Number(req.params.commentId)
+   console.log("Delete commentId:", commentId);
+
+  if (!commentId)
+    return res.status(400).json({ error: "Bad Request" });
+
+  try {
+    const result = await commentDelete({commentId});
+    return res.status(200).json({ data: result });
+  } catch (e) {
+    console.error("Delete error:", e);  // e.stack 대신 e로 바꿔서 전체 메시지 보기
+    if (
+      e instanceof PrismaClientKnownRequestError ||
+      e instanceof PrismaClientValidationError
+    )
+      return res.status(400).json({ error: e.stack });
+    return res.status(500).json({ error: e.stack });
   }
 };
